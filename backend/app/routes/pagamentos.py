@@ -38,10 +38,21 @@ def get_pagamentos():
 def create_pagamento():
     data = request.get_json()
     
+    # Calcular valor do funcionário se fornecido
+    valor_funcionario = 0
+    if data.get('funcionario_id'):
+        from app.models.funcionario import Funcionario
+        funcionario = Funcionario.query.get(data.get('funcionario_id'))
+        if funcionario:
+            valor_total = float(data.get('valor', 0))
+            valor_funcionario = (valor_total * float(funcionario.porcentagem)) / 100
+    
     pagamento = Pagamento(
         cliente_id=data.get('cliente_id'),
         agendamento_id=data.get('agendamento_id'),
+        funcionario_id=data.get('funcionario_id'),
         valor=data.get('valor'),
+        valor_funcionario=valor_funcionario,
         forma_pagamento=data.get('forma_pagamento'),
         data_pagamento=datetime.fromisoformat(data.get('data_pagamento')) if data.get('data_pagamento') else datetime.utcnow(),
         status=data.get('status', 'pago'),

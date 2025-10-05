@@ -1,65 +1,84 @@
 <template>
   <div>
     <div class="mb-8">
-      <h1 class="text-h3 font-weight-bold text-gradient mb-2">
-        📊 Dashboard
-      </h1>
+      <div class="d-flex align-center mb-2">
+        <img src="/images/Logo_redondo-removebg-preview.png" alt="Logo" class="dashboard-logo-small mr-3" @error="handleLogoError" />
+        <h1 class="text-h3 font-weight-bold text-gradient">
+        Dashboard
+        </h1>
+      </div>
       <p class="text-h6 text-grey-darken-1">Visão geral do seu salão</p>
     </div>
 
     <!-- Cards de Resumo -->
-    <v-row class="mb-6">
-      <v-col cols="12" sm="6" md="3">
-        <v-card class="dashboard-card elegant-shadow pa-6 text-center">
-          <v-icon size="48" class="mb-4" color="primary">
+    <v-row class="mb-4">
+      <v-col cols="12" sm="6" md="4">
+        <v-card class="dashboard-card elegant-shadow pa-4 text-center">
+          <v-icon size="32" class="mb-2" color="primary">
             mdi-calendar-today
           </v-icon>
-          <div class="text-h4 font-weight-bold text-primary mb-2">
+          <div class="text-h5 font-weight-bold text-primary mb-1">
             {{ resumo.agendamentos_hoje }}
           </div>
-          <div class="text-subtitle-1 text-grey-darken-1">
+          <div class="text-caption text-grey-darken-1">
             Agendamentos Hoje
           </div>
         </v-card>
       </v-col>
       
-      <v-col cols="12" sm="6" md="3">
-        <v-card class="dashboard-card elegant-shadow pa-6 text-center">
-          <v-icon size="48" class="mb-4" color="success">
-            mdi-currency-usd
+      <v-col cols="12" sm="6" md="4">
+        <v-card class="dashboard-card elegant-shadow pa-4 text-center">
+          <v-icon size="32" class="mb-2" color="success">
+            mdi-cash
           </v-icon>
-          <div class="text-h4 font-weight-bold text-success mb-2">
-            R$ {{ formatCurrency(resumo.receita_mes) }}
+          <div class="text-h5 font-weight-bold text-success mb-1">
+            R$ {{ formatCurrency(resumo.receita_dia) }}
           </div>
-          <div class="text-subtitle-1 text-grey-darken-1">
-            Receita do Mês
+          <div class="text-caption text-grey-darken-1">
+            Receita do Dia
           </div>
         </v-card>
       </v-col>
       
-      <v-col cols="12" sm="6" md="3">
-        <v-card class="dashboard-card elegant-shadow pa-6 text-center">
-          <v-icon size="48" class="mb-4" color="info">
+      <v-col cols="12" sm="6" md="4">
+        <v-card class="dashboard-card elegant-shadow pa-4 text-center">
+          <v-icon size="32" class="mb-2" color="success">
+            mdi-currency-usd
+          </v-icon>
+          <div class="text-h5 font-weight-bold text-success mb-1">
+            R$ {{ formatCurrency(resumo.receita_mes) }}
+          </div>
+          <div class="text-caption text-grey-darken-1">
+            Receita do Mês
+          </div>
+        </v-card>
+      </v-col>
+    </v-row>
+    
+    <v-row class="mb-6">
+      <v-col cols="12" sm="6" md="6">
+        <v-card class="dashboard-card elegant-shadow pa-4 text-center">
+          <v-icon size="32" class="mb-2" color="info">
             mdi-account-group
           </v-icon>
-          <div class="text-h4 font-weight-bold text-info mb-2">
+          <div class="text-h5 font-weight-bold text-info mb-1">
             {{ resumo.total_clientes }}
           </div>
-          <div class="text-subtitle-1 text-grey-darken-1">
+          <div class="text-caption text-grey-darken-1">
             Total Clientes
           </div>
         </v-card>
       </v-col>
       
-      <v-col cols="12" sm="6" md="3">
-        <v-card class="dashboard-card elegant-shadow pa-6 text-center">
-          <v-icon size="48" class="mb-4" color="warning">
+      <v-col cols="12" sm="6" md="6">
+        <v-card class="dashboard-card elegant-shadow pa-4 text-center">
+          <v-icon size="32" class="mb-2" color="warning">
             mdi-clock-outline
           </v-icon>
-          <div class="text-h4 font-weight-bold text-warning mb-2">
+          <div class="text-h5 font-weight-bold text-warning mb-1">
             {{ resumo.agendamentos_pendentes }}
           </div>
-          <div class="text-subtitle-1 text-grey-darken-1">
+          <div class="text-caption text-grey-darken-1">
             Agendamentos Pendentes
           </div>
         </v-card>
@@ -162,6 +181,7 @@ import { format } from 'date-fns'
 
 const resumo = ref({
   agendamentos_hoje: 0,
+  receita_dia: 0,
   receita_mes: 0,
   total_clientes: 0,
   agendamentos_pendentes: 0
@@ -206,7 +226,28 @@ const loadDashboard = async () => {
   }
 }
 
+const handleLogoError = (event) => {
+  event.target.style.display = 'none'
+}
+
 onMounted(() => {
   loadDashboard()
 })
 </script>
+
+<style scoped>
+
+
+.dashboard-logo-small {
+  width: 50px;
+  height: 50px;
+  filter: drop-shadow(0 2px 4px rgba(248, 187, 217, 0.3));
+}
+
+@media (max-width: 600px) {
+  .dashboard-logo-small {
+    width: 40px;
+    height: 40px;
+  }
+}
+</style>

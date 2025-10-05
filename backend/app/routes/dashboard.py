@@ -10,59 +10,78 @@ from sqlalchemy import func, and_, desc
 
 dashboard_bp = Blueprint('dashboard', __name__)
 
+@dashboard_bp.route('/health', methods=['GET'])
+def health_check():
+    return jsonify({'status': 'ok', 'message': 'Dashboard API is working'}), 200
+
 @dashboard_bp.route('/resumo', methods=['GET'])
 @jwt_required()
 def get_resumo():
-    hoje = datetime.now().date()
-    inicio_mes = hoje.replace(day=1)
-    
-    # Agendamentos de hoje
-    agendamentos_hoje = Agendamento.query.filter(
-        and_(
-            func.date(Agendamento.data_hora) == hoje,
-            Agendamento.status != 'cancelado'
-        )
-    ).count()
-    
-    # Receita do mês
-    receita_mes = db.session.query(func.sum(Pagamento.valor)).filter(
-        and_(
-            func.date(Pagamento.data_pagamento) >= inicio_mes,
-            Pagamento.status == 'pago'
-        )
-    ).scalar() or 0
-    
-    # Total de clientes
-    total_clientes = Cliente.query.count()
-    
-    # Agendamentos pendentes
-    agendamentos_pendentes = Agendamento.query.filter(
-        and_(
-            Agendamento.data_hora >= datetime.now(),
-            Agendamento.status == 'agendado'
-        )
-    ).count()
-    
-    return jsonify({
-        'agendamentos_hoje': agendamentos_hoje,
-        'receita_mes': float(receita_mes),
-        'total_clientes': total_clientes,
-        'agendamentos_pendentes': agendamentos_pendentes
-    })
+    try:
+        hoje = datetime.now().date()
+        inicio_mes = hoje.replace(day=1)
+        
+        # Agendamentos de hoje
+        agendamentos_hoje = Agendamento.query.filter(
+            and_(
+                func.date(Agendamento.data_hora) == hoje,
+                Agendamento.status != 'cancelado'
+            )
+        ).count()
+        
+        # Receita do dia
+        receita_dia = db.session.query(func.sum(Pagamento.valor)).filter(
+            and_(
+                func.date(Pagamento.data_pagamento) == hoje,
+                Pagamento.status == 'pago'
+            )
+        ).scalar() or 0
+        
+        # Receita do mês
+        receita_mes = db.session.query(func.sum(Pagamento.valor)).filter(
+            and_(
+                func.date(Pagamento.data_pagamento) >= inicio_mes,
+                Pagamento.status == 'pago'
+            )
+        ).scalar() or 0
+        
+        # Total de clientes
+        total_clientes = Cliente.query.count()
+        
+        # Agendamentos pendentes
+        agendamentos_pendentes = Agendamento.query.filter(
+            and_(
+                Agendamento.data_hora >= datetime.now(),
+                Agendamento.status == 'agendado'
+            )
+        ).count()
+        
+        return jsonify({
+            'agendamentos_hoje': agendamentos_hoje,
+            'receita_dia': float(receita_dia),
+            'receita_mes': float(receita_mes),
+            'total_clientes': total_clientes,
+            'agendamentos_pendentes': agendamentos_pendentes
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @dashboard_bp.route('/agenda-hoje', methods=['GET'])
 @jwt_required()
 def get_agenda_hoje():
-    hoje = datetime.now().date()
-    
-    agendamentos = Agendamento.query.filter(
-        and_(
-            func.date(Agendamento.data_hora) == hoje,
-            Agendamento.status != 'cancelado'
-        )
-    ).order_by(Agendamento.data_hora).all()
-    
-    return jsonify([a.to_dict() for a in agendamentos])
+    try:
+        hoje = datetime.now().date()
+        
+        agendamentos = Agendamento.query.filter(
+            and_(
+                func.date(Agendamento.data_hora) == hoje,
+                Agendamento.status != 'cancelado'
+            )
+        ).order_by(Agendamento.data_hora).all()
+        
+        return jsonify([a.to_dict() for a in agendamentos])
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @dashboard_bp.route('/receitas-mensais', methods=['GET'])
 @jwt_required()
@@ -138,5 +157,8 @@ def get_performance_funcionarios():
 @dashboard_bp.route('/clientes-recentes', methods=['GET'])
 @jwt_required()
 def get_clientes_recentes():
-    clientes = Cliente.query.order_by(desc(Cliente.created_at)).limit(5).all()
-    return jsonify([c.to_dict() for c in clientes])
+    try:
+        clientes = Cliente.query.order_by(desc(Cliente.created_at)).limit(5).all()
+        return jsonify([c.to_dict() for c in clientes])
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500

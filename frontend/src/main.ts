@@ -30,6 +30,21 @@ const vuetify = createVuetify({
           'on-primary': '#000000',
           'on-secondary': '#000000'
         }
+      },
+      dark: {
+        colors: {
+          primary: '#F8BBD9',
+          secondary: '#2D2D2D',
+          accent: '#FFB6C1',
+          background: '#121212',
+          surface: '#1E1E1E',
+          error: '#FF6B6B',
+          warning: '#FFB74D',
+          info: '#E1BEE7',
+          success: '#C8E6C9',
+          'on-primary': '#000000',
+          'on-secondary': '#FFFFFF'
+        }
       }
     }
   }

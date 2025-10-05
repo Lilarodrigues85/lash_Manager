@@ -21,9 +21,9 @@ with app.app_context():
     
     # Criar funcionários padrão
     funcionarios_data = [
-        {'nome': 'Ana Silva', 'especialidade': 'Volume Brasileiro'},
-        {'nome': 'Maria Santos', 'especialidade': 'Volume Russo'},
-        {'nome': 'Julia Costa', 'especialidade': 'Fio a Fio'}
+        {'nome': 'Ana Silva', 'especialidade': 'Volume Brasileiro', 'porcentagem': 25.00},
+        {'nome': 'Maria Santos', 'especialidade': 'Volume Russo', 'porcentagem': 25.00},
+        {'nome': 'Julia Costa', 'especialidade': 'Fio a Fio', 'porcentagem': 25.00}
     ]
     
     for func_data in funcionarios_data:

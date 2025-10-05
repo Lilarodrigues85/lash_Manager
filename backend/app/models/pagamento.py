@@ -7,7 +7,9 @@ class Pagamento(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     cliente_id = db.Column(db.Integer, db.ForeignKey('clientes.id'), nullable=False)
     agendamento_id = db.Column(db.Integer, db.ForeignKey('agendamentos.id'))
+    funcionario_id = db.Column(db.Integer, db.ForeignKey('funcionarios.id'))
     valor = db.Column(db.Numeric(10, 2), nullable=False)
+    valor_funcionario = db.Column(db.Numeric(10, 2), default=0)
     forma_pagamento = db.Column(db.String(50), nullable=False)  # dinheiro, cartao, pix
     data_pagamento = db.Column(db.DateTime, default=datetime.utcnow)
     status = db.Column(db.String(20), default='pago')  # pago, pendente, cancelado
@@ -20,7 +22,10 @@ class Pagamento(db.Model):
             'cliente_id': self.cliente_id,
             'cliente_nome': self.cliente.nome if self.cliente else None,
             'agendamento_id': self.agendamento_id,
+            'funcionario_id': self.funcionario_id,
+            'funcionario_nome': self.funcionario.nome if self.funcionario else None,
             'valor': float(self.valor),
+            'valor_funcionario': float(self.valor_funcionario),
             'forma_pagamento': self.forma_pagamento,
             'data_pagamento': self.data_pagamento.isoformat() if self.data_pagamento else None,
             'status': self.status,

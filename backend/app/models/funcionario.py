@@ -8,6 +8,7 @@ class Funcionario(db.Model):
     nome = db.Column(db.String(100), nullable=False)
     especialidade = db.Column(db.String(100), nullable=False)
     telefone = db.Column(db.String(20))
+    porcentagem = db.Column(db.Numeric(5, 2), default=25.00)
     ativo = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
@@ -21,6 +22,7 @@ class Funcionario(db.Model):
             'nome': self.nome,
             'especialidade': self.especialidade,
             'telefone': self.telefone,
+            'porcentagem': float(self.porcentagem),
             'ativo': self.ativo,
             'created_at': self.created_at.isoformat() if self.created_at else None
         }

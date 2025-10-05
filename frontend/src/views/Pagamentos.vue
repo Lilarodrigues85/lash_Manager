@@ -35,6 +35,9 @@
             <template v-slot:item.valor="{ item }">
               R$ {{ item.valor.toFixed(2) }}
             </template>
+            <template v-slot:item.valor_funcionario="{ item }">
+              R$ {{ item.valor_funcionario.toFixed(2) }}
+            </template>
             <template v-slot:item.data_pagamento="{ item }">
               {{ formatDate(item.data_pagamento) }}
             </template>
@@ -103,13 +106,31 @@
               required
             ></v-select>
             
+            <v-select
+              v-model="pagamentoForm.funcionario_id"
+              :items="funcionarios"
+              item-title="nome"
+              item-value="id"
+              label="Funcionário"
+              @update:model-value="calcularComissao"
+            ></v-select>
+            
             <v-text-field
               v-model="pagamentoForm.valor"
-              label="Valor"
+              label="Valor Total"
               type="number"
               step="0.01"
               :rules="[v => !!v || 'Valor é obrigatório']"
               required
+              @input="calcularComissao"
+            ></v-text-field>
+            
+            <v-text-field
+              v-model="valorFuncionario"
+              label="Comissão do Funcionário"
+              readonly
+              variant="outlined"
+              class="mb-4"
             ></v-text-field>
             
             <v-select
@@ -160,10 +181,14 @@ const editingPagamento = ref(null)
 const pagamentos = ref([])
 const pendentes = ref([])
 const clientes = ref([])
+const funcionarios = ref([])
+const valorFuncionario = ref('R$ 0,00')
 
 const headersPagamentos = [
   { title: 'Cliente', key: 'cliente_nome' },
-  { title: 'Valor', key: 'valor' },
+  { title: 'Funcionário', key: 'funcionario_nome' },
+  { title: 'Valor Total', key: 'valor' },
+  { title: 'Comissão', key: 'valor_funcionario' },
   { title: 'Forma', key: 'forma_pagamento' },
   { title: 'Data', key: 'data_pagamento' },
   { title: 'Status', key: 'status' },
@@ -183,6 +208,7 @@ const formasPagamento = ['dinheiro', 'cartao', 'pix']
 
 const pagamentoForm = ref({
   cliente_id: null,
+  funcionario_id: null,
   valor: '',
   forma_pagamento: '',
   data_pagamento: '',
@@ -233,6 +259,28 @@ const loadClientes = async () => {
   }
 }
 
+const loadFuncionarios = async () => {
+  try {
+    const response = await api.get('/funcionarios')
+    funcionarios.value = response.data
+  } catch (error) {
+    console.error('Erro ao carregar funcionários:', error)
+  }
+}
+
+const calcularComissao = () => {
+  if (pagamentoForm.value.funcionario_id && pagamentoForm.value.valor) {
+    const funcionario = funcionarios.value.find(f => f.id === pagamentoForm.value.funcionario_id)
+    if (funcionario) {
+      const valor = parseFloat(pagamentoForm.value.valor) || 0
+      const comissao = (valor * funcionario.porcentagem) / 100
+      valorFuncionario.value = `R$ ${comissao.toFixed(2)}`
+    }
+  } else {
+    valorFuncionario.value = 'R$ 0,00'
+  }
+}
+
 const openDialog = (pagamento = null) => {
   if (pagamento) {
     editingPagamento.value = pagamento
@@ -244,11 +292,13 @@ const openDialog = (pagamento = null) => {
     editingPagamento.value = null
     pagamentoForm.value = {
       cliente_id: null,
+      funcionario_id: null,
       valor: '',
       forma_pagamento: '',
       data_pagamento: format(new Date(), "yyyy-MM-dd'T'HH:mm"),
       observacoes: ''
     }
+    valorFuncionario.value = 'R$ 0,00'
   }
   dialog.value = true
 }
@@ -309,5 +359,6 @@ watch(tab, (newTab) => {
 onMounted(() => {
   loadPagamentos()
   loadClientes()
+  loadFuncionarios()
 })
 </script>
