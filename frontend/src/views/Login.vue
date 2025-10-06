@@ -93,12 +93,16 @@ const handleLogin = async () => {
     if (response.ok) {
       const data = await response.json()
       localStorage.setItem('token', data.access_token)
-      window.location.href = '/'
+      localStorage.setItem('login_debug', `Token salvo: ${data.access_token.substring(0, 20)}... em ${new Date()}`)
+      alert(`Login OK! Token: ${data.access_token.substring(0, 20)}...`)
+      setTimeout(() => {
+        window.location.href = '/'
+      }, 1000)
     } else {
       alert('Credenciais inválidas')
     }
   } catch (error) {
-    alert('Erro de conexão')
+    alert(`Erro: ${error}`)
   }
   
   loading.value = false
