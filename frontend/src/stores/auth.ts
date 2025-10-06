@@ -29,10 +29,11 @@ export const useAuthStore = defineStore('auth', () => {
   const login = async (username: string, password: string) => {
     try {
       const response = await api.post('/auth/login', { username, password })
+      console.log('Resposta do login:', response.data)
       token.value = response.data.access_token
       user.value = response.data.usuario
       localStorage.setItem('token', token.value)
-      console.log('Login realizado, token salvo:', !!token.value)
+      console.log('Token salvo no localStorage:', localStorage.getItem('token'))
       return true
     } catch (error) {
       console.error('Erro no login:', error)
