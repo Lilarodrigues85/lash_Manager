@@ -57,21 +57,14 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const authStore = useAuthStore()
+  const token = localStorage.getItem('token')
+  const isAuthenticated = !!token
   
-  // Garantir que o token seja inicializado
-  authStore.initializeAuth()
-  
-  console.log('Router guard - Rota:', to.path, 'Autenticado:', authStore.isAuthenticated, 'Token existe:', !!authStore.token)
-  
-  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-    console.log('Redirecionando para login - não autenticado')
+  if (to.meta.requiresAuth && !isAuthenticated) {
     next('/login')
-  } else if (to.path === '/login' && authStore.isAuthenticated) {
-    console.log('Redirecionando para dashboard - já autenticado')
+  } else if (to.path === '/login' && isAuthenticated) {
     next('/')
   } else {
-    console.log('Permitindo navegação')
     next()
   }
 })
