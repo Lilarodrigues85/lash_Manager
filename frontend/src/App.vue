@@ -78,7 +78,7 @@ onMounted(() => {
   }
 })
 
-const isAuthenticated = computed(() => authStore.isAuthenticated)
+const isAuthenticated = computed(() => !!localStorage.getItem('token'))
 
 const menuItems = [
   { title: 'Dashboard', icon: 'mdi-view-dashboard-outline', to: '/' },

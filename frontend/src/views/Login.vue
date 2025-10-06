@@ -93,11 +93,9 @@ const handleLogin = async () => {
     if (response.ok) {
       const data = await response.json()
       localStorage.setItem('token', data.access_token)
-      localStorage.setItem('login_debug', `Token salvo: ${data.access_token.substring(0, 20)}... em ${new Date()}`)
-      alert(`Login OK! Token: ${data.access_token.substring(0, 20)}...`)
-      setTimeout(() => {
-        window.location.href = '/'
-      }, 1000)
+      localStorage.setItem('user', JSON.stringify(data.usuario))
+      alert(`Login OK! Redirecionando...`)
+      window.location.replace('/')
     } else {
       alert('Credenciais inválidas')
     }
