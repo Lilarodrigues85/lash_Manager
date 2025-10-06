@@ -55,17 +55,28 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, computed, watch, onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { useTheme } from 'vuetify'
 import { useAuthStore } from './stores/auth'
 import { useThemeStore } from './stores/theme'
 
 const drawer = ref(true)
 const router = useRouter()
+const route = useRoute()
 const theme = useTheme()
 const authStore = useAuthStore()
 const themeStore = useThemeStore()
+
+// Verificar autenticação na inicialização
+onMounted(() => {
+  const token = localStorage.getItem('token')
+  if (!token && route.path !== '/login') {
+    router.push('/login')
+  } else if (token && route.path === '/login') {
+    router.push('/')
+  }
+})
 
 const isAuthenticated = computed(() => authStore.isAuthenticated)
 
