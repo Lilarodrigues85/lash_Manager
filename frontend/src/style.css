@@ -46,6 +46,12 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.2) !important;
 }
 
+.v-theme--dark .v-card {
+  background: rgba(30, 30, 30, 0.9) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+}
+
 .v-btn {
   border-radius: 12px !important;
   text-transform: none !important;
@@ -70,9 +76,17 @@ body {
   border-radius: 0 20px 20px 0 !important;
 }
 
+.v-theme--dark .v-navigation-drawer {
+  background: linear-gradient(180deg, #2d2d2d 0%, #1a1a1a 100%) !important;
+}
+
 .v-app-bar {
   background: linear-gradient(90deg, #F8BBD9 0%, #FFB6C1 100%) !important;
   backdrop-filter: blur(10px) !important;
+}
+
+.v-theme--dark .v-app-bar {
+  background: linear-gradient(90deg, #2d2d2d 0%, #1a1a1a 100%) !important;
 }
 
 .v-data-table {
@@ -82,6 +96,14 @@ body {
 
 .v-data-table-header {
   background: linear-gradient(90deg, #f8f9fa 0%, #e9ecef 100%) !important;
+}
+
+.v-theme--dark .v-data-table-header {
+  background: linear-gradient(90deg, #2d2d2d 0%, #1a1a1a 100%) !important;
+}
+
+.v-theme--dark .v-data-table {
+  background: rgba(30, 30, 30, 0.9) !important;
 }
 
 .v-chip {
@@ -94,10 +116,20 @@ body {
   border: 1px solid rgba(248, 187, 217, 0.3) !important;
 }
 
+.v-theme--dark .dashboard-card {
+  background: linear-gradient(135deg, rgba(45, 45, 45, 0.9) 0%, rgba(30, 30, 30, 0.8) 100%) !important;
+  border: 1px solid rgba(248, 187, 217, 0.2) !important;
+}
+
 .glass-effect {
   background: rgba(255, 255, 255, 0.25) !important;
   backdrop-filter: blur(10px) !important;
   border: 1px solid rgba(255, 255, 255, 0.18) !important;
+}
+
+.v-theme--dark .glass-effect {
+  background: rgba(30, 30, 30, 0.7) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
 .pink-gradient {
