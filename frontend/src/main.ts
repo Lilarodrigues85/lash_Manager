@@ -57,4 +57,9 @@ app.use(pinia)
 app.use(router)
 app.use(vuetify)
 
+// Inicializar auth store após pinia estar configurado
+import { useAuthStore } from './stores/auth'
+const authStore = useAuthStore()
+authStore.initializeAuth()
+
 app.mount('#app')

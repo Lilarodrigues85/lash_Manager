@@ -3,8 +3,16 @@ import { ref, computed } from 'vue'
 import api from '../services/api'
 
 export const useAuthStore = defineStore('auth', () => {
-  const token = ref(localStorage.getItem('token') || '')
+  const token = ref('')
   const user = ref(null)
+
+  // Inicializar token do localStorage
+  const initializeAuth = () => {
+    const savedToken = localStorage.getItem('token')
+    if (savedToken) {
+      token.value = savedToken
+    }
+  }
 
   const isAuthenticated = computed(() => !!token.value)
 
@@ -36,12 +44,16 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  // Inicializar ao criar a store
+  initializeAuth()
+
   return {
     token,
     user,
     isAuthenticated,
     login,
     logout,
-    getCurrentUser
+    getCurrentUser,
+    initializeAuth
   }
 })
