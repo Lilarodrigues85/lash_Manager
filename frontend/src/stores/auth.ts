@@ -27,27 +27,33 @@ export const useAuthStore = defineStore('auth', () => {
   const isAuthenticated = computed(() => !!token.value)
 
   const login = async (username: string, password: string) => {
+    const log = (msg: string) => {
+      console.log(msg)
+      const logs = JSON.parse(localStorage.getItem('debug_logs') || '[]')
+      logs.push(`${new Date().toISOString()}: ${msg}`)
+      localStorage.setItem('debug_logs', JSON.stringify(logs.slice(-20)))
+    }
+    
     try {
-      console.log('Fazendo requisição de login...')
+      log('Fazendo requisição de login...')
       const response = await api.post('/auth/login', { username, password })
-      console.log('Resposta completa:', response)
-      console.log('Dados da resposta:', response.data)
+      log(`Resposta recebida: status ${response.status}`)
+      log(`Dados: ${JSON.stringify(response.data)}`)
       
       if (response.data && response.data.access_token) {
         token.value = response.data.access_token
         user.value = response.data.usuario
         localStorage.setItem('token', token.value)
-        console.log('Token definido na store:', token.value)
-        console.log('Token salvo no localStorage:', localStorage.getItem('token'))
-        console.log('isAuthenticated após login:', !!token.value)
+        log(`Token salvo: ${token.value.substring(0, 20)}...`)
+        log(`isAuthenticated: ${!!token.value}`)
         return true
       } else {
-        console.error('Token não encontrado na resposta')
+        log('ERRO: Token não encontrado na resposta')
         return false
       }
-    } catch (error) {
-      console.error('Erro completo no login:', error)
-      console.error('Resposta do erro:', error.response?.data)
+    } catch (error: any) {
+      log(`ERRO no login: ${error.message}`)
+      log(`Status do erro: ${error.response?.status}`)
       return false
     }
   }

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Logs</title>
+</head>
+<body>
+    <h1>Debug Logs do Login</h1>
+    <button onclick="readLogs()">Ler Logs</button>
+    <button onclick="clearLogs()">Limpar Logs</button>
+    <pre id="logs"></pre>
+
+    <script>
+        function readLogs() {
+            const logs = JSON.parse(localStorage.getItem('debug_logs') || '[]');
+            document.getElementById('logs').textContent = logs.join('\n');
+        }
+        
+        function clearLogs() {
+            localStorage.removeItem('debug_logs');
+            document.getElementById('logs').textContent = 'Logs limpos';
+        }
+        
+        // Ler logs automaticamente
+        readLogs();
+        
+        // Atualizar a cada 2 segundos
+        setInterval(readLogs, 2000);
+    </script>
+</body>
+</html>
