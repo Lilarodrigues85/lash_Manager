@@ -231,7 +231,17 @@ const handleLogoError = (event) => {
 }
 
 onMounted(() => {
-  loadDashboard()
+  // Aguardar um pouco para garantir que o token esteja carregado
+  setTimeout(() => {
+    const token = localStorage.getItem('token')
+    console.log('Dashboard - Token no localStorage:', !!token)
+    if (token) {
+      loadDashboard()
+    } else {
+      console.log('Dashboard - Sem token, redirecionando para login')
+      window.location.href = '/login'
+    }
+  }, 100)
 })
 </script>
 
