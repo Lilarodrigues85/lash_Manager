@@ -68,15 +68,7 @@ const theme = useTheme()
 const authStore = useAuthStore()
 const themeStore = useThemeStore()
 
-// Verificar autenticação na inicialização
-onMounted(() => {
-  const token = localStorage.getItem('token')
-  if (!token && route.path !== '/login') {
-    router.push('/login')
-  } else if (token && route.path === '/login') {
-    router.push('/')
-  }
-})
+// Verificação de autenticação removida temporariamente
 
 const isAuthenticated = computed(() => !!localStorage.getItem('token'))
 
