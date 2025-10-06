@@ -22,6 +22,7 @@ export const useAuthStore = defineStore('auth', () => {
       token.value = response.data.access_token
       user.value = response.data.usuario
       localStorage.setItem('token', token.value)
+      console.log('Login realizado, token salvo:', !!token.value)
       return true
     } catch (error) {
       console.error('Erro no login:', error)

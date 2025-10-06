@@ -62,11 +62,16 @@ router.beforeEach((to, from, next) => {
   // Garantir que o token seja inicializado
   authStore.initializeAuth()
   
+  console.log('Router guard - Rota:', to.path, 'Autenticado:', authStore.isAuthenticated, 'Token existe:', !!authStore.token)
+  
   if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+    console.log('Redirecionando para login - não autenticado')
     next('/login')
   } else if (to.path === '/login' && authStore.isAuthenticated) {
+    console.log('Redirecionando para dashboard - já autenticado')
     next('/')
   } else {
+    console.log('Permitindo navegação')
     next()
   }
 })
