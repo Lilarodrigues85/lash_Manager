@@ -3,7 +3,7 @@ import { ref, computed } from 'vue'
 import api from '../services/api'
 
 export const useAuthStore = defineStore('auth', () => {
-  const token = ref('')
+  const token = ref(localStorage.getItem('token') || '')
   const user = ref(null)
 
   // Inicializar token do localStorage
