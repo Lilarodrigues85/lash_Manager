@@ -392,7 +392,7 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 
 <div align="center">
 
-**Desenvolvido com 💜 pela equipe DATAMETRIA**
+**Desenvolvido com 💜 por Lila Rodrigues**
 
 *Sistema profissional para gestão completa de salões de lash designer*
 
