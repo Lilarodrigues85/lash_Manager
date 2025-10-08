@@ -26,3 +26,13 @@ Thumbs.db
 
 # Amazon Q
 .amazonq/
+
+# Images (except screenshots)
+frontend/public/images/
+frontend/src/assets/images/
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.svg
+!docs/screenshots/*.png
