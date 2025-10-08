@@ -16,6 +16,37 @@ Sistema completo de gestão para salões de lash designer com controle de client
 
 ---
 
+## 📸 Screenshots
+
+### 🔐 Login Elegante
+![Login](docs/screenshots/login.png)
+
+### 📊 Dashboard Completo
+![Dashboard](docs/screenshots/dashboard.png)
+
+### 👥 Gestão de Clientes
+![Clientes](docs/screenshots/clientes.png)
+
+### 📅 Sistema de Agenda
+![Agenda](docs/screenshots/agenda.png)
+
+### 👩💼 Gestão de Funcionários
+![Funcionários](docs/screenshots/funcionarios.png)
+
+### 🎨 Catálogo de Procedimentos
+![Procedimentos](docs/screenshots/procedimentos.png)
+
+### 💰 Controle Financeiro
+![Pagamentos](docs/screenshots/pagamentos.png)
+
+### 📱 Sistema de Mensagens
+![Mensagens](docs/screenshots/mensagens.png)
+
+### 🌙 Tema Escuro
+![Tema Escuro](docs/screenshots/tema-escuro.png)
+
+---
+
 ## 🎯 Funcionalidades
 
 ### 👥 Gestão de Clientes
