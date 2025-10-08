@@ -10,8 +10,9 @@ Esta pasta contém as imagens de exemplo do LashManager para uso no README princ
 - `clientes.png` - Gestão de clientes
 - `agenda.png` - Sistema de agenda
 - `funcionarios.png` - Gestão de funcionários
-- `pagamentos.png` - Controle financeiro
 - `procedimentos.png` - Catálogo de procedimentos
+- `pagamentos.png` - Controle financeiro
+- `mensagens.png` - Sistema de mensagens WhatsApp
 - `tema-escuro.png` - Exemplo do tema escuro
 
 ## 🎯 Como usar no README
@@ -19,6 +20,8 @@ Esta pasta contém as imagens de exemplo do LashManager para uso no README princ
 ```markdown
 ![Dashboard](docs/screenshots/dashboard.png)
 ![Agenda](docs/screenshots/agenda.png)
+![Procedimentos](docs/screenshots/procedimentos.png)
+![Mensagens](docs/screenshots/mensagens.png)
 ```
 
 ## 📐 Recomendações
