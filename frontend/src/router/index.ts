@@ -56,6 +56,16 @@ const router = createRouter({
   routes
 })
 
-// Router guard removido - verificação será feita no App.vue
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore()
+  
+  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+    next('/login')
+  } else if (to.path === '/login' && authStore.isAuthenticated) {
+    next('/')
+  } else {
+    next()
+  }
+})
 
 export default router

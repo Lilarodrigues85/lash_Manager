@@ -17,7 +17,7 @@ def login():
     usuario = Usuario.query.filter_by(username=username).first()
     
     if usuario and usuario.check_password(password) and usuario.ativo:
-        access_token = create_access_token(identity=usuario.id)
+        access_token = create_access_token(identity=str(usuario.id))
         return jsonify({
             'access_token': access_token,
             'usuario': usuario.to_dict()
@@ -50,6 +50,6 @@ def register():
 @auth_bp.route('/me', methods=['GET'])
 @jwt_required()
 def get_current_user():
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     usuario = Usuario.query.get(user_id)
     return jsonify(usuario.to_dict())

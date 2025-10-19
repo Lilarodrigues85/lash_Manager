@@ -84,18 +84,10 @@ const handleLogin = async () => {
   loading.value = true
   
   try {
-    const response = await fetch('http://localhost:5000/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: username.value, password: password.value })
-    })
+    const success = await authStore.login(username.value, password.value)
     
-    if (response.ok) {
-      const data = await response.json()
-      localStorage.setItem('token', data.access_token)
-      localStorage.setItem('user', JSON.stringify(data.usuario))
-      alert(`Login OK! Redirecionando...`)
-      window.location.replace('/')
+    if (success) {
+      router.push('/')
     } else {
       alert('Credenciais inválidas')
     }

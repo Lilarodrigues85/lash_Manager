@@ -4,7 +4,11 @@ from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 from flask_marshmallow import Marshmallow
+from dotenv import load_dotenv
 import os
+
+# Carregar variáveis de ambiente ANTES de qualquer configuração
+load_dotenv()
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -14,10 +18,13 @@ ma = Marshmallow()
 def create_app():
     app = Flask(__name__)
     
+    jwt_key = os.environ.get('JWT_SECRET_KEY', 'jwt-secret')
+    print(f"\nJWT_SECRET_KEY carregada: {jwt_key[:20]}...\n")
+    
     app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-key')
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///lash_manager.db?check_same_thread=False')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['JWT_SECRET_KEY'] = os.environ.get('JWT_SECRET_KEY', 'jwt-secret')
+    app.config['JWT_SECRET_KEY'] = jwt_key
     app.config['JWT_ACCESS_TOKEN_EXPIRES'] = 3600
     
     db.init_app(app)
@@ -32,6 +39,8 @@ def create_app():
     
     @jwt.invalid_token_loader
     def invalid_token_callback(error):
+        print(f"\nTOKEN INVALIDO: {error}")
+        print(f"JWT_SECRET_KEY em uso: {app.config['JWT_SECRET_KEY'][:20]}...\n")
         return jsonify({'error': 'Token inválido'}), 401
     
     @jwt.unauthorized_loader

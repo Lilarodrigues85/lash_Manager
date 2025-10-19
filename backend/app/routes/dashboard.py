@@ -18,18 +18,23 @@ def health_check():
 @jwt_required()
 def get_resumo():
     try:
+        print("\n=== GET RESUMO ===")
         hoje = datetime.now().date()
+        print(f"Hoje: {hoje}")
         inicio_mes = hoje.replace(day=1)
         
         # Agendamentos de hoje
+        print("Buscando agendamentos...")
         agendamentos_hoje = Agendamento.query.filter(
             and_(
                 func.date(Agendamento.data_hora) == hoje,
                 Agendamento.status != 'cancelado'
             )
         ).count()
+        print(f"Agendamentos: {agendamentos_hoje}")
         
         # Receita do dia
+        print("Buscando receita dia...")
         receita_dia = db.session.query(func.sum(Pagamento.valor)).filter(
             and_(
                 func.date(Pagamento.data_pagamento) == hoje,
@@ -46,7 +51,9 @@ def get_resumo():
         ).scalar() or 0
         
         # Total de clientes
+        print("Buscando total clientes...")
         total_clientes = Cliente.query.count()
+        print(f"Total: {total_clientes}")
         
         # Agendamentos pendentes
         agendamentos_pendentes = Agendamento.query.filter(
@@ -64,6 +71,9 @@ def get_resumo():
             'agendamentos_pendentes': agendamentos_pendentes
         })
     except Exception as e:
+        print(f"\nERRO GET_RESUMO: {e}")
+        import traceback
+        traceback.print_exc()
         return jsonify({'error': str(e)}), 500
 
 @dashboard_bp.route('/agenda-hoje', methods=['GET'])
@@ -158,7 +168,12 @@ def get_performance_funcionarios():
 @jwt_required()
 def get_clientes_recentes():
     try:
+        print("\n=== GET CLIENTES RECENTES ===")
         clientes = Cliente.query.order_by(desc(Cliente.created_at)).limit(5).all()
+        print(f"Clientes encontrados: {len(clientes)}")
         return jsonify([c.to_dict() for c in clientes])
     except Exception as e:
+        print(f"\nERRO GET_CLIENTES_RECENTES: {e}")
+        import traceback
+        traceback.print_exc()
         return jsonify({'error': str(e)}), 500
