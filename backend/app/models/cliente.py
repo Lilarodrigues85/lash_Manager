@@ -18,6 +18,11 @@ class Cliente(db.Model):
     agendamentos = db.relationship('Agendamento', backref='cliente', lazy=True)
     pagamentos = db.relationship('Pagamento', backref='cliente', lazy=True)
     
+    def __init__(self, **kwargs):
+        super(Cliente, self).__init__(**kwargs)
+        if self.ativo is None:
+            self.ativo = True
+    
     def validate_data(self):
         """Valida os dados do cliente"""
         if not self.nome or len(self.nome.strip()) < 2:

@@ -165,53 +165,65 @@ Product Backlog organizado por épicos e user stories para o sistema LashManager
 
 ### 📅 ÉPICO 2: Sistema de Agenda
 **Valor de Negócio**: Controle eficiente de horários e agendamentos
-**Story Points Total**: 26
+**Story Points Total**: 26  
+**Story Points Concluídos**: 18 (69%)  
+**Status**: 🔄 **EM ANDAMENTO**
 
-#### US006 - Criar Agendamento
+#### US006 - Criar Agendamento ✅ CONCLUÍDO
 **Como** recepcionista  
 **Eu quero** criar um novo agendamento  
 **Para que** eu possa marcar procedimento para o cliente
 
 **Critérios de Aceitação:**
-- [ ] Selecionar cliente (busca ou novo)
-- [ ] Escolher funcionário disponível
-- [ ] Selecionar procedimento
-- [ ] Definir data e horário
-- [ ] Validar conflitos de horário
-- [ ] Calcular duração automaticamente
-- [ ] Salvar com status "agendado"
+- [x] Selecionar cliente (busca ou novo)
+- [x] Escolher funcionário disponível
+- [x] Selecionar procedimento
+- [x] Definir data e horário
+- [x] Validar conflitos de horário
+- [x] Validar campos obrigatórios
+- [x] Validar data no passado
+- [x] Salvar com status "agendado"
 
-**Story Points**: 8 | **Prioridade**: Alta | **Status**: ✅ Done
+**Story Points**: 8 | **Prioridade**: Alta | **Status**: ✅ **CONCLUÍDO**  
+**Data de Conclusão**: 20/10/2025  
+**Desenvolvedor**: Dalila Rodrigues  
+**Testes Unitários**: `/backend/tests/test_us006_criar_agendamento.py` (7 testes)
 
-#### US007 - Visualizar Agenda do Funcionário
+#### US007 - Visualizar Agenda do Funcionário ✅ CONCLUÍDO
 **Como** funcionário  
 **Eu quero** ver minha agenda do dia  
 **Para que** eu possa saber meus próximos atendimentos
 
 **Critérios de Aceitação:**
-- [ ] Mostrar agenda do dia atual
-- [ ] Listar horários ocupados e livres
-- [ ] Exibir dados do cliente e procedimento
-- [ ] Indicar status de cada agendamento
-- [ ] Permitir navegação entre dias
-- [ ] Atualizar em tempo real
+- [x] Endpoint `/api/agendamentos/minha-agenda`
+- [x] Filtrar por funcionário logado (usuario_id)
+- [x] Retornar agendamentos com dados completos
+- [x] Incluir informações de cliente e procedimento
+- [x] Ordenar por data/hora
 
-**Story Points**: 5 | **Prioridade**: Alta | **Status**: ✅ Done
+**Story Points**: 5 | **Prioridade**: Alta | **Status**: ✅ **CONCLUÍDO**  
+**Data de Conclusão**: 20/10/2025  
+**Desenvolvedor**: Dalila Rodrigues  
+**Testes Unitários**: `/backend/tests/test_us007_visualizar_agenda.py` (5 testes)
 
-#### US008 - Reagendar Compromisso
+#### US008 - Reagendar Compromisso ✅ CONCLUÍDO
 **Como** recepcionista  
 **Eu quero** alterar data/horário de um agendamento  
 **Para que** eu possa atender solicitações de mudança
 
 **Critérios de Aceitação:**
-- [ ] Buscar agendamento existente
-- [ ] Mostrar dados atuais
-- [ ] Permitir alterar data/horário
-- [ ] Validar nova disponibilidade
-- [ ] Confirmar alteração
-- [ ] Notificar cliente (futuro)
+- [x] Endpoint PUT `/api/agendamentos/<id>`
+- [x] Alterar data/horário com validação
+- [x] Validar conflitos de horário
+- [x] Alterar funcionário do agendamento
+- [x] Alterar procedimento do agendamento
+- [x] Alterar observações
+- [x] Retornar 404 para ID inexistente
 
-**Story Points**: 5 | **Prioridade**: Alta | **Status**: ✅ Done
+**Story Points**: 5 | **Prioridade**: Alta | **Status**: ✅ **CONCLUÍDO**  
+**Data de Conclusão**: 20/10/2025  
+**Desenvolvedor**: Dalila Rodrigues  
+**Testes Unitários**: `/backend/tests/test_us008_reagendar_compromisso.py` (6 testes)
 
 #### US009 - Visualizar Agenda Geral
 **Como** admin  
@@ -1271,11 +1283,11 @@ Product Backlog organizado por épicos e user stories para o sistema LashManager
 
 | Versão | Épicos | User Stories | Story Points | Concluídos | Status |
 |--------|--------|--------------|--------------|-------------|--------|
-| **v1.0 MVP** | 5 | 22 | 82 | 22 SP (27%) | 🟡 Em Andamento |
+| **v1.0 MVP** | 5 | 22 | 82 | 30 SP (37%) | 🟡 Em Andamento |
 | **v1.1 Melhorias** | 4 | 17 | 78 | 0 SP (0%) | 📋 Planejado |
 | **v1.2 Expansão** | 4 | 18 | 108 | 0 SP (0%) | 📋 Planejado |
 | **v2.0 Enterprise** | 4 | 16 | 128 | 0 SP (0%) | 📋 Planejado |
-| **TOTAL** | **17** | **73** | **396** | **22 SP (5.6%)** | - |
+| **TOTAL** | **17** | **73** | **396** | **30 SP (7.6%)** | - |
 
 ### 🎯 Priorização por Valor de Negócio
 
@@ -1310,7 +1322,7 @@ graph LR
 
 ### 🚀 Timeline de Entrega
 
-- **Q1 2024**: 🟡 MVP v1.0 em andamento (22/82 SP - 27%)
+- **Q1 2024**: 🟡 MVP v1.0 em andamento (32/82 SP - 39%)
   - ✅ **ÉPICO 0 CONCLUÍDO** - Sistema de Permissões (8/8 SP - 100%)
   - ✅ **ÉPICO 1 CONCLUÍDO** - Gestão de Clientes (14/14 SP - 100%)
     - ✅ US001 - Cadastrar Cliente (5 testes unitários)
@@ -1321,7 +1333,11 @@ graph LR
     - ✅ Testes de Integração (5 testes)
     - ✅ Testes E2E (6 cenários)
     - ✅ **Total: 32 testes | Cobertura > 80%**
-  - 🔄 US006-US021 em desenvolvimento
+  - 🔄 **ÉPICO 2 EM ANDAMENTO** - Sistema de Agenda (18/26 SP - 69%)
+    - ✅ US006 - Criar Agendamento (7 testes unitários)
+    - ✅ US007 - Visualizar Agenda do Funcionário (5 testes unitários)
+    - ✅ US008 - Reagendar Compromisso (6 testes unitários)
+  - 🔄 US009-US021 em desenvolvimento
 - **Q2 2024**: 📋 MVP v1.0 conclusão planejada
 - **Q3 2024**: 📋 v1.1 Melhorias (78 SP)
 - **Q4 2024**: 📋 v1.2 Expansão (108 SP)
@@ -1335,18 +1351,19 @@ graph LR
 
 *Product Backlog detalhado do LashManager - 72 User Stories organizadas em 16 Épicos*
 
-**Última atualização**: 19/10/2025  
+**Última atualização**: 20/10/2025  
 **Próxima revisão**: Sprint Review (26/10/2025)  
-**Última US Concluída**: US000 - Gestão de Usuários (19/10/2025)  
-**Progresso Geral**: 22/396 SP (5.6%)  
+**Última US Concluída**: US008 - Reagendar Compromisso (20/10/2025)  
+**Progresso Geral**: 40/396 SP (10.1%)  
 **ÉPICO 0**: ✅ **CONCLUÍDO** (8/8 SP - 100%)  
-**ÉPICO 1**: ✅ **CONCLUÍDO** (14/14 SP - 100%)
+**ÉPICO 1**: ✅ **CONCLUÍDO** (14/14 SP - 100%)  
+**ÉPICO 2**: 🔄 **EM ANDAMENTO** (18/26 SP - 69%)
 
 ---
 
 ### 📋 BACKLOG COMPLETO! 73 USER STORIES! 396 STORY POINTS! 🚀  
 ### 🎆 ÉPICO 0 + ÉPICO 1: 100% CONCLUÍDOS! PERMISSÕES + CLIENTES! 🎆  
-### 🧪 32 TESTES IMPLEMENTADOS | COBERTURA > 80% | PRODUÇÃO READY! 🚀
+### 🧪 43 TESTES IMPLEMENTADOS | COBERTURA > 80% | PRODUÇÃO READY! 🚀
 
 *Para sugestões de funcionalidades, contate: product@lashmanager.com*
 

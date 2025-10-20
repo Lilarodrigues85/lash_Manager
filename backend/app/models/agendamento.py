@@ -16,6 +16,30 @@ class Agendamento(db.Model):
     # Relacionamentos
     pagamentos = db.relationship('Pagamento', backref='agendamento', lazy=True)
     
+    def __init__(self, **kwargs):
+        super(Agendamento, self).__init__(**kwargs)
+        if self.status is None:
+            self.status = 'agendado'
+    
+    def validate_data(self):
+        """Valida os dados do agendamento"""
+        from datetime import datetime
+        
+        if not self.cliente_id:
+            raise ValueError("Cliente é obrigatório")
+        
+        if not self.funcionario_id:
+            raise ValueError("Funcionário é obrigatório")
+        
+        if not self.procedimento_id:
+            raise ValueError("Procedimento é obrigatório")
+        
+        if not self.data_hora:
+            raise ValueError("Data e hora são obrigatórios")
+        
+        if self.data_hora < datetime.now():
+            raise ValueError("Data e hora não podem ser no passado")
+    
     def to_dict(self):
         return {
             'id': self.id,

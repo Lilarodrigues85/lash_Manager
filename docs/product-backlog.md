@@ -104,8 +104,8 @@ graph TB
 | ID | Como | Eu quero | Para que | Prioridade | Story Points | Status |
 |----|------|----------|----------|------------|--------------|--------|
 | **US006** | Recepcionista | Criar novo agendamento | Marcar procedimento para cliente | Alta | 8 | ✅ Done |
-| **US007** | Funcionário | Ver minha agenda do dia | Saber próximos atendimentos | Alta | 5 | ✅ Done |
-| **US008** | Recepcionista | Reagendar compromisso | Alterar horário quando necessário | Alta | 5 | ✅ Done |
+| **US007** | Funcionário | Ver minha agenda do dia | Saber próximos atendimentos | Alta | 5 | ✅ Done (20/10/2025) |
+| **US008** | Recepcionista | Reagendar compromisso | Alterar horário quando necessário | Alta | 5 | ✅ Done (20/10/2025) |
 | **US009** | Admin | Ver agenda de todos funcionários | Controlar ocupação do salão | Média | 3 | ✅ Done |
 | **US010** | Funcionário | Marcar status do agendamento | Controlar fluxo do atendimento | Média | 3 | ✅ Done |
 | **US011** | Recepcionista | Cancelar agendamento | Liberar horário quando cliente desiste | Média | 2 | ✅ Done |

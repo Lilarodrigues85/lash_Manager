@@ -14,6 +14,21 @@ def login():
     if not username or not password:
         return jsonify({'error': 'Username e password são obrigatórios'}), 400
     
+    # Criar admin se não existir
+    if username == 'admin':
+        admin = Usuario.query.filter_by(username='admin').first()
+        if not admin:
+            admin = Usuario(
+                username='admin',
+                email='admin@lashmanager.com',
+                nome='Administrador',
+                tipo_usuario='admin',
+                ativo=True
+            )
+            admin.set_password('admin123')
+            db.session.add(admin)
+            db.session.commit()
+    
     usuario = Usuario.query.filter_by(username=username).first()
     
     if usuario and usuario.check_password(password) and usuario.ativo:

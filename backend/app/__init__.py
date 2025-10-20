@@ -17,6 +17,7 @@ ma = Marshmallow()
 
 def create_app():
     app = Flask(__name__)
+    app.url_map.strict_slashes = False
     
     jwt_key = os.environ.get('JWT_SECRET_KEY', 'jwt-secret')
     print(f"\nJWT_SECRET_KEY carregada: {jwt_key[:20]}...\n")
@@ -32,6 +33,15 @@ def create_app():
     jwt.init_app(app)
     ma.init_app(app)
     
+    # Configure CORS ANTES de tudo
+    CORS(app, resources={
+        r"/api/*": {
+            "origins": "*",
+            "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+            "allow_headers": ["Content-Type", "Authorization"]
+        }
+    })
+    
     # JWT error handlers
     @jwt.expired_token_loader
     def expired_token_callback(jwt_header, jwt_payload):
@@ -46,13 +56,6 @@ def create_app():
     @jwt.unauthorized_loader
     def missing_token_callback(error):
         return jsonify({'error': 'Token de acesso necessário'}), 401
-    # Configure CORS properly
-    CORS(app, 
-         origins=['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:5173'],
-         methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-         allow_headers=['Content-Type', 'Authorization', 'Access-Control-Allow-Origin'],
-         supports_credentials=True,
-         expose_headers=['Content-Type', 'Authorization'])
     
     from app.routes.auth import auth_bp
     from app.routes.clientes import clientes_bp
@@ -76,14 +79,6 @@ def create_app():
     app.register_blueprint(comissoes_bp, url_prefix='/api/comissoes')
     app.register_blueprint(usuarios_bp, url_prefix='/api/usuarios')
     
-    # Global OPTIONS handler for CORS preflight
-    @app.before_request
-    def handle_preflight():
-        if request.method == "OPTIONS":
-            response = jsonify({})
-            response.headers.add("Access-Control-Allow-Origin", "*")
-            response.headers.add('Access-Control-Allow-Headers', "*")
-            response.headers.add('Access-Control-Allow-Methods', "*")
-            return response
+
     
     return app

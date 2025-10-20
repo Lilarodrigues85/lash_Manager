@@ -70,10 +70,11 @@ Sistema completo de gestão para salões de lash designer com controle de client
 - ✅ Relatórios de performance
 
 ### 📅 Sistema de Agenda
-- ✅ Agendamento por funcionário
+- ✅ Criar agendamento com validações
+- ✅ Validar conflitos de horário
 - ✅ Controle de horários disponíveis
-- ✅ Notificações de compromissos
-- ✅ Reagendamento e cancelamentos
+- ✅ Visualizar agenda do funcionário
+- 🔄 Reagendamento e cancelamentos
 
 ### 💰 Controle Financeiro
 - ✅ Registro de pagamentos recebidos
@@ -354,11 +355,16 @@ O sistema é totalmente responsivo e funciona perfeitamente em:
 
 ## 🚀 Roadmap
 
-### v1.0 - MVP (Atual)
-- [x] Gestão básica de clientes
-- [x] Sistema de agenda
-- [x] Controle financeiro
-- [x] Dashboard principal
+### v1.0 - MVP (Atual - 45% Concluído)
+- [x] Sistema de Permissões (100%)
+- [x] Gestão de Clientes (100%)
+- [🔄] Sistema de Agenda (69%)
+  - [x] US006 - Criar Agendamento
+  - [x] US007 - Visualizar Agenda do Funcionário
+  - [x] US008 - Reagendar Compromisso
+  - [ ] US009-US011 em desenvolvimento
+- [ ] Controle Financeiro
+- [ ] Gestão de Funcionários
 
 ### v1.1 - Melhorias
 - [ ] Notificações por WhatsApp

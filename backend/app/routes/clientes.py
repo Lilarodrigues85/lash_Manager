@@ -9,6 +9,10 @@ from sqlalchemy.exc import IntegrityError
 
 clientes_bp = Blueprint('clientes', __name__)
 
+@clientes_bp.route('/', methods=['OPTIONS'])
+def options_clientes():
+    return '', 204
+
 @clientes_bp.route('/', methods=['GET'])
 @jwt_required()
 def get_clientes():
@@ -66,11 +70,7 @@ def create_cliente():
         db.session.add(cliente)
         db.session.commit()
         
-        return jsonify({
-            'success': True,
-            'message': 'Cliente cadastrado com sucesso',
-            'cliente': cliente.to_dict()
-        }), 201
+        return jsonify(cliente.to_dict()), 201
         
     except ValueError as e:
         return jsonify({'success': False, 'error': str(e)}), 400
@@ -109,6 +109,23 @@ def get_cliente(cliente_id):
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
+@clientes_bp.route('/<int:cliente_id>/historico', methods=['GET'])
+@jwt_required()
+def get_historico_cliente(cliente_id):
+    try:
+        cliente = Cliente.query.get_or_404(cliente_id)
+        
+        agendamentos = Agendamento.query.filter_by(cliente_id=cliente_id).order_by(desc(Agendamento.data_hora)).all()
+        pagamentos = Pagamento.query.filter_by(cliente_id=cliente_id).order_by(desc(Pagamento.data_pagamento)).all()
+        
+        return jsonify({
+            'success': True,
+            'agendamentos': [a.to_dict() for a in agendamentos],
+            'pagamentos': [p.to_dict() for p in pagamentos]
+        })
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
 @clientes_bp.route('/<int:cliente_id>', methods=['PUT'])
 @jwt_required()
 def update_cliente(cliente_id):
@@ -133,11 +150,7 @@ def update_cliente(cliente_id):
         
         db.session.commit()
         
-        return jsonify({
-            'success': True,
-            'message': 'Cliente atualizado com sucesso',
-            'cliente': cliente.to_dict()
-        })
+        return jsonify(cliente.to_dict())
         
     except ValueError as e:
         return jsonify({'success': False, 'error': str(e)}), 400

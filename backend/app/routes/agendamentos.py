@@ -32,43 +32,54 @@ def get_agendamentos():
 @agendamentos_bp.route('/', methods=['POST'])
 @jwt_required()
 def create_agendamento():
-    data = request.get_json()
-    
-    # Verificar conflitos de horário
-    data_hora = datetime.fromisoformat(data.get('data_hora'))
-    funcionario_id = data.get('funcionario_id')
-    
-    conflito = Agendamento.query.filter(
-        and_(
-            Agendamento.funcionario_id == funcionario_id,
-            Agendamento.data_hora == data_hora,
-            Agendamento.status != 'cancelado'
+    try:
+        data = request.get_json()
+        
+        if not data:
+            return jsonify({'error': 'Dados não fornecidos'}), 400
+        
+        # Validar campos obrigatórios
+        required_fields = ['cliente_id', 'funcionario_id', 'procedimento_id', 'data_hora']
+        for field in required_fields:
+            if not data.get(field):
+                return jsonify({'error': f'Campo {field} é obrigatório'}), 400
+        
+        # Converter data_hora
+        data_hora = datetime.fromisoformat(data.get('data_hora').replace('Z', '+00:00'))
+        funcionario_id = data.get('funcionario_id')
+        
+        # Verificar conflitos de horário
+        conflito = Agendamento.query.filter(
+            and_(
+                Agendamento.funcionario_id == funcionario_id,
+                Agendamento.data_hora == data_hora,
+                Agendamento.status != 'cancelado'
+            )
+        ).first()
+        
+        if conflito:
+            return jsonify({'error': 'Horário já ocupado'}), 400
+        
+        agendamento = Agendamento(
+            cliente_id=data.get('cliente_id'),
+            funcionario_id=funcionario_id,
+            procedimento_id=data.get('procedimento_id'),
+            data_hora=data_hora,
+            observacoes=data.get('observacoes')
         )
-    ).first()
-    
-    if conflito:
-        return jsonify({'error': 'Horário já ocupado'}), 400
-    
-    agendamento = Agendamento(
-        cliente_id=data.get('cliente_id'),
-        funcionario_id=funcionario_id,
-        procedimento_id=data.get('procedimento_id'),
-        data_hora=data_hora,
-        observacoes=data.get('observacoes')
-    )
-    
-    db.session.add(agendamento)
-    db.session.commit()
-    
-    # Enviar mensagem de confirmação
-    from app.services.whatsapp_service import WhatsAppService
-    whatsapp = WhatsAppService()
-    whatsapp_url = whatsapp.send_confirmation_message(agendamento)
-    
-    response = agendamento.to_dict()
-    response['whatsapp_url'] = whatsapp_url
-    
-    return jsonify(response), 201
+        
+        agendamento.validate_data()
+        
+        db.session.add(agendamento)
+        db.session.commit()
+        
+        return jsonify(agendamento.to_dict()), 201
+        
+    except ValueError as e:
+        return jsonify({'error': str(e)}), 400
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
 
 @agendamentos_bp.route('/<int:agendamento_id>', methods=['PUT'])
 @jwt_required()
@@ -111,6 +122,46 @@ def delete_agendamento(agendamento_id):
     agendamento.status = 'cancelado'
     db.session.commit()
     return jsonify({'message': 'Agendamento cancelado com sucesso'})
+
+@agendamentos_bp.route('/minha-agenda', methods=['GET'])
+@jwt_required()
+def get_minha_agenda():
+    """Retorna agenda do funcionário logado"""
+    try:
+        from flask_jwt_extended import get_jwt_identity
+        from app.models.funcionario import Funcionario
+        
+        user_id = int(get_jwt_identity())
+        funcionario = Funcionario.query.filter_by(usuario_id=user_id).first()
+        
+        if not funcionario:
+            return jsonify({'error': 'Funcionário não encontrado'}), 404
+        
+        data = request.args.get('data')  # YYYY-MM-DD
+        if not data:
+            from datetime import date
+            data = date.today().strftime('%Y-%m-%d')
+        
+        data_obj = datetime.strptime(data, '%Y-%m-%d').date()
+        inicio_dia = datetime.combine(data_obj, datetime.min.time())
+        fim_dia = datetime.combine(data_obj, datetime.max.time())
+        
+        agendamentos = Agendamento.query.filter(
+            and_(
+                Agendamento.funcionario_id == funcionario.id,
+                Agendamento.data_hora >= inicio_dia,
+                Agendamento.data_hora <= fim_dia
+            )
+        ).order_by(Agendamento.data_hora).all()
+        
+        return jsonify({
+            'data': data,
+            'funcionario': funcionario.nome,
+            'agendamentos': [a.to_dict() for a in agendamentos],
+            'total': len(agendamentos)
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @agendamentos_bp.route('/horarios-disponiveis', methods=['GET'])
 @jwt_required()
