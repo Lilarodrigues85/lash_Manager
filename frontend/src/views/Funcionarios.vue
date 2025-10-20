@@ -2,46 +2,54 @@
   <v-container>
     <v-row>
       <v-col cols="12">
-        <div class="d-flex justify-space-between align-center mb-4">
-          <h1 class="text-h4">Funcionários</h1>
-          <v-btn color="primary" @click="openDialog()">
-            <v-icon left>mdi-plus</v-icon>
-            Novo Funcionário
-          </v-btn>
-        </div>
+        <h1 class="text-h4 mb-4">Gestão de Equipe</h1>
+        
+
       </v-col>
     </v-row>
 
-    <v-row>
-      <v-col cols="12">
-        <v-card>
-          <v-data-table
-            :headers="headers"
-            :items="funcionarios"
-            :loading="loading"
-            class="elevation-1"
-          >
-            <template v-slot:item.porcentagem="{ item }">
-              {{ item.porcentagem }}%
-            </template>
-            <template v-slot:item.ativo="{ item }">
-              <v-chip :color="item.ativo ? 'success' : 'error'">
-                {{ item.ativo ? 'Ativo' : 'Inativo' }}
-              </v-chip>
-            </template>
-            <template v-slot:item.actions="{ item }">
-              <v-icon small class="mr-2" @click="editFuncionario(item)">
-                mdi-pencil
-              </v-icon>
-              <v-icon small @click="toggleFuncionario(item)">
-                {{ item.ativo ? 'mdi-account-off' : 'mdi-account-check' }}
-              </v-icon>
-            </template>
-          </v-data-table>
-        </v-card>
-      </v-col>
+    <v-row class="mt-4">
+          <v-col cols="12">
+            <div class="d-flex justify-end mb-4">
+              <v-btn color="primary" @click="openDialog()">
+                <v-icon left>mdi-plus</v-icon>
+                Novo Funcionário
+              </v-btn>
+            </div>
+          </v-col>
+        </v-row>
+
+        <v-row>
+          <v-col cols="12">
+            <v-card>
+              <v-data-table
+                :headers="headers"
+                :items="funcionarios"
+                :loading="loading"
+                class="elevation-1"
+              >
+                <template v-slot:item.porcentagem="{ item }">
+                  {{ item.porcentagem }}%
+                </template>
+                <template v-slot:item.ativo="{ item }">
+                  <v-chip :color="item.ativo ? 'success' : 'error'">
+                    {{ item.ativo ? 'Ativo' : 'Inativo' }}
+                  </v-chip>
+                </template>
+                <template v-slot:item.actions="{ item }">
+                  <v-icon small class="mr-2" @click="editFuncionario(item)">
+                    mdi-pencil
+                  </v-icon>
+                  <v-icon small @click="toggleFuncionario(item)">
+                    {{ item.ativo ? 'mdi-account-off' : 'mdi-account-check' }}
+                  </v-icon>
+                </template>
+              </v-data-table>
+            </v-card>
+          </v-col>
     </v-row>
 
+    <!-- Dialog Funcionário -->
     <v-dialog v-model="dialog" max-width="600px">
       <v-card>
         <v-card-title>
@@ -54,19 +62,19 @@
               label="Nome"
               :rules="[v => !!v || 'Nome é obrigatório']"
               required
-            ></v-text-field>
+            />
             
             <v-text-field
               v-model="funcionarioForm.especialidade"
               label="Especialidade"
               :rules="[v => !!v || 'Especialidade é obrigatória']"
               required
-            ></v-text-field>
+            />
             
             <v-text-field
               v-model="funcionarioForm.telefone"
               label="Telefone"
-            ></v-text-field>
+            />
             
             <v-text-field
               v-model="funcionarioForm.porcentagem"
@@ -75,11 +83,47 @@
               step="0.01"
               min="0"
               max="100"
-            ></v-text-field>
+            />
+
+            <v-divider class="my-4" />
+            <v-subheader>Acesso ao Sistema</v-subheader>
+            
+            <v-text-field
+              v-model="funcionarioForm.email"
+              label="Email"
+              type="email"
+              :rules="[v => !!v || 'Email é obrigatório']"
+              required
+            />
+            
+            <v-text-field
+              v-model="funcionarioForm.username"
+              label="Username"
+              :rules="[v => !!v || 'Username é obrigatório']"
+              :disabled="!!editingFuncionario"
+              required
+            />
+            
+            <v-text-field
+              v-model="funcionarioForm.password"
+              label="Senha"
+              type="password"
+              :rules="editingFuncionario ? [] : [v => !!v || 'Senha é obrigatória']"
+              :hint="editingFuncionario ? 'Deixe em branco para manter a senha atual' : ''"
+            />
+            
+            <v-select
+              v-model="funcionarioForm.tipo_usuario"
+              :items="tiposUsuario"
+              label="Tipo de Acesso"
+              item-title="text"
+              item-value="value"
+              required
+            />
           </v-form>
         </v-card-text>
         <v-card-actions>
-          <v-spacer></v-spacer>
+          <v-spacer />
           <v-btn text @click="closeDialog">Cancelar</v-btn>
           <v-btn color="primary" @click="saveFuncionario">
             Salvar
@@ -87,12 +131,15 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+
   </v-container>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import api from '../services/api'
+import { useAuthStore } from '../stores/auth'
 
 const loading = ref(false)
 const dialog = ref(false)
@@ -114,7 +161,11 @@ const funcionarioForm = ref({
   nome: '',
   especialidade: '',
   telefone: '',
-  porcentagem: 25.00
+  porcentagem: 25.00,
+  email: '',
+  username: '',
+  password: '',
+  tipo_usuario: 'funcionario'
 })
 
 const loadFuncionarios = async () => {
@@ -131,14 +182,24 @@ const loadFuncionarios = async () => {
 const openDialog = (funcionario = null) => {
   if (funcionario) {
     editingFuncionario.value = funcionario
-    funcionarioForm.value = { ...funcionario }
+    funcionarioForm.value = { 
+      ...funcionario,
+      password: '',
+      username: funcionario.usuario?.username || '',
+      email: funcionario.usuario?.email || '',
+      tipo_usuario: funcionario.usuario?.tipo_usuario || 'funcionario'
+    }
   } else {
     editingFuncionario.value = null
     funcionarioForm.value = {
       nome: '',
       especialidade: '',
       telefone: '',
-      porcentagem: 25.00
+      porcentagem: 25.00,
+      email: '',
+      username: '',
+      password: '',
+      tipo_usuario: 'funcionario'
     }
   }
   dialog.value = true
@@ -188,6 +249,11 @@ const toggleFuncionario = async (funcionario) => {
     console.error('Erro ao alterar status:', error)
   }
 }
+
+const tiposUsuario = [
+  { text: 'Administrador', value: 'admin' },
+  { text: 'Funcionário', value: 'funcionario' }
+]
 
 onMounted(() => {
   loadFuncionarios()

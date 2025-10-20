@@ -10,14 +10,16 @@ class Funcionario(db.Model):
     telefone = db.Column(db.String(20))
     porcentagem = db.Column(db.Numeric(5, 2), default=25.00)
     ativo = db.Column(db.Boolean, default=True)
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
     # Relacionamentos
+    usuario = db.relationship('Usuario', backref='funcionario', lazy=True)
     procedimentos = db.relationship('Procedimento', backref='funcionario', lazy=True)
     agendamentos = db.relationship('Agendamento', backref='funcionario', lazy=True)
     
     def to_dict(self):
-        return {
+        result = {
             'id': self.id,
             'nome': self.nome,
             'especialidade': self.especialidade,
@@ -26,3 +28,11 @@ class Funcionario(db.Model):
             'ativo': self.ativo,
             'created_at': self.created_at.isoformat() if self.created_at else None
         }
+        if self.usuario:
+            result['usuario'] = {
+                'id': self.usuario.id,
+                'username': self.usuario.username,
+                'email': self.usuario.email,
+                'tipo_usuario': self.usuario.tipo_usuario
+            }
+        return result

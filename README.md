@@ -49,6 +49,14 @@ Sistema completo de gestão para salões de lash designer com controle de client
 
 ## 🎯 Funcionalidades
 
+### 🔐 Sistema de Permissões
+- ✅ Controle de acesso por tipo de usuário (Admin/Funcionário)
+- ✅ Cadastro integrado: funcionário + usuário em uma única tela
+- ✅ Definição de tipo de acesso ao criar funcionário
+- ✅ Restrição de acesso a informações financeiras
+- ✅ Menu dinâmico baseado em permissões
+- ✅ Relacionamento 1:1 entre funcionário e usuário
+
 ### 👥 Gestão de Clientes
 - ✅ Cadastro completo de clientes
 - ✅ Histórico de procedimentos realizados

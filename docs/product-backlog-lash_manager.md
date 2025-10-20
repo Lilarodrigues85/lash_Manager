@@ -16,6 +16,35 @@ Product Backlog organizado por épicos e user stories para o sistema LashManager
 
 ## 🎯 Épicos MVP (v1.0) - EM ANDAMENTO (85%)
 
+### 🔐 ÉPICO 0: Sistema de Permissões ✅ CONCLUÍDO
+**Valor de Negócio**: Controle de acesso e segurança
+**Story Points Total**: 8  
+**Story Points Concluídos**: 8 (100%)  
+**Status**: ✅ **CONCLUÍDO**  
+**Data de Conclusão**: 19/10/2025
+
+#### US000 - Gestão de Usuários e Permissões
+**Como** admin  
+**Eu quero** gerenciar usuários do sistema ao cadastrar funcionários  
+**Para que** eu possa controlar quem tem acesso e suas permissões
+
+**Critérios de Aceitação:**
+- [x] Criar usuário automaticamente ao cadastrar funcionário
+- [x] Definir tipo de acesso (admin/funcionario) no cadastro
+- [x] Campos: username, email, senha, tipo de usuário
+- [x] Validação de username e email únicos
+- [x] Editar dados de acesso do funcionário
+- [x] Desativar funcionário desativa também o usuário
+- [x] Menu "Pagamentos" oculto para funcionários
+- [x] Relacionamento funcionario ↔ usuario (1:1)
+
+**Story Points**: 8 | **Prioridade**: Crítica | **Status**: ✅ **CONCLUÍDO**  
+**Data de Conclusão**: 19/10/2025  
+**Desenvolvedor**: Dalila Rodrigues  
+**Implementação**: Integrado na tela de Funcionários
+
+---
+
 ### 👥 ÉPICO 1: Gestão de Clientes ✅ CONCLUÍDO
 **Valor de Negócio**: Controle completo da base de clientes
 **Story Points Total**: 14  
@@ -1242,11 +1271,11 @@ Product Backlog organizado por épicos e user stories para o sistema LashManager
 
 | Versão | Épicos | User Stories | Story Points | Concluídos | Status |
 |--------|--------|--------------|--------------|-------------|--------|
-| **v1.0 MVP** | 4 | 21 | 74 | 14 SP (19%) | 🟡 Em Andamento |
+| **v1.0 MVP** | 5 | 22 | 82 | 22 SP (27%) | 🟡 Em Andamento |
 | **v1.1 Melhorias** | 4 | 17 | 78 | 0 SP (0%) | 📋 Planejado |
 | **v1.2 Expansão** | 4 | 18 | 108 | 0 SP (0%) | 📋 Planejado |
 | **v2.0 Enterprise** | 4 | 16 | 128 | 0 SP (0%) | 📋 Planejado |
-| **TOTAL** | **16** | **72** | **388** | **14 SP (3.6%)** | - |
+| **TOTAL** | **17** | **73** | **396** | **22 SP (5.6%)** | - |
 
 ### 🎯 Priorização por Valor de Negócio
 
@@ -1281,7 +1310,8 @@ graph LR
 
 ### 🚀 Timeline de Entrega
 
-- **Q1 2024**: 🟡 MVP v1.0 em andamento (14/74 SP - 19%)
+- **Q1 2024**: 🟡 MVP v1.0 em andamento (22/82 SP - 27%)
+  - ✅ **ÉPICO 0 CONCLUÍDO** - Sistema de Permissões (8/8 SP - 100%)
   - ✅ **ÉPICO 1 CONCLUÍDO** - Gestão de Clientes (14/14 SP - 100%)
     - ✅ US001 - Cadastrar Cliente (5 testes unitários)
     - ✅ US002 - Buscar Cliente (4 testes unitários)
@@ -1305,16 +1335,17 @@ graph LR
 
 *Product Backlog detalhado do LashManager - 72 User Stories organizadas em 16 Épicos*
 
-**Última atualização**: 15/01/2024  
-**Próxima revisão**: Sprint Review (22/01/2024)  
-**Última US Concluída**: US005 - Desativar Cliente (15/01/2024)  
-**Progresso Geral**: 14/388 SP (3.6%)  
+**Última atualização**: 19/10/2025  
+**Próxima revisão**: Sprint Review (26/10/2025)  
+**Última US Concluída**: US000 - Gestão de Usuários (19/10/2025)  
+**Progresso Geral**: 22/396 SP (5.6%)  
+**ÉPICO 0**: ✅ **CONCLUÍDO** (8/8 SP - 100%)  
 **ÉPICO 1**: ✅ **CONCLUÍDO** (14/14 SP - 100%)
 
 ---
 
-### 📋 BACKLOG COMPLETO! 72 USER STORIES! 388 STORY POINTS! 🚀  
-### 🎆 ÉPICO 1: 100% CONCLUÍDO! GESTÃO DE CLIENTES COMPLETA E TESTADA! 🎆  
+### 📋 BACKLOG COMPLETO! 73 USER STORIES! 396 STORY POINTS! 🚀  
+### 🎆 ÉPICO 0 + ÉPICO 1: 100% CONCLUÍDOS! PERMISSÕES + CLIENTES! 🎆  
 ### 🧪 32 TESTES IMPLEMENTADOS | COBERTURA > 80% | PRODUÇÃO READY! 🚀
 
 *Para sugestões de funcionalidades, contate: product@lashmanager.com*

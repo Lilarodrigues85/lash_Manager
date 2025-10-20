@@ -17,10 +17,14 @@ export const useAuthStore = defineStore('auth', () => {
   // Inicializar token do localStorage
   const initializeAuth = () => {
     const savedToken = localStorage.getItem('token')
+    const savedUser = localStorage.getItem('usuario')
     console.log('Inicializando auth, token do localStorage:', savedToken)
     if (savedToken) {
       token.value = savedToken
       console.log('Token carregado:', !!token.value)
+    }
+    if (savedUser) {
+      user.value = JSON.parse(savedUser)
     }
   }
 
@@ -44,6 +48,7 @@ export const useAuthStore = defineStore('auth', () => {
         token.value = response.data.access_token
         user.value = response.data.usuario
         localStorage.setItem('token', token.value)
+        localStorage.setItem('usuario', JSON.stringify(response.data.usuario))
         log(`Token salvo: ${token.value.substring(0, 20)}...`)
         log(`isAuthenticated: ${!!token.value}`)
         return true
@@ -62,6 +67,7 @@ export const useAuthStore = defineStore('auth', () => {
     token.value = ''
     user.value = null
     localStorage.removeItem('token')
+    localStorage.removeItem('usuario')
   }
 
   const getCurrentUser = async () => {
@@ -76,9 +82,12 @@ export const useAuthStore = defineStore('auth', () => {
   // Inicializar ao criar a store
   initializeAuth()
 
+  const usuario = computed(() => user.value)
+
   return {
     token,
     user,
+    usuario,
     isAuthenticated,
     login,
     logout,

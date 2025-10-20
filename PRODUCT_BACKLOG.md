@@ -16,7 +16,10 @@ Sistema completo de gestão para salões de lash designer
 
 ## 🎯 Épicos
 
-### Epic 1: Gestão de Clientes
+### Epic 0: Sistema de Permissões ✅ CONCLUÍDO
+**Objetivo**: Controle de acesso e segurança com diferentes níveis de permissão
+
+### Epic 1: Gestão de Clientes ✅ CONCLUÍDO
 **Objetivo**: Sistema completo para cadastro, histórico e acompanhamento de clientes
 
 ### Epic 2: Sistema de Agenda
@@ -37,6 +40,32 @@ Sistema completo de gestão para salões de lash designer
 ---
 
 ## 📋 User Stories
+
+### 🎯 Epic 0: Sistema de Permissões
+
+#### US000 - Gestão de Usuários e Permissões ✅ CONCLUÍDO
+**Como** admin  
+**Eu quero** gerenciar usuários ao cadastrar funcionários  
+**Para que** eu possa controlar acesso ao sistema de forma integrada
+
+**Critérios de Aceitação:**
+- [x] Criar usuário automaticamente ao cadastrar funcionário
+- [x] Definir tipo de acesso (admin/funcionario)
+- [x] Campos: username, email, senha integrados no cadastro
+- [x] Validação de username e email únicos
+- [x] Editar dados de acesso junto com funcionário
+- [x] Desativar funcionário desativa usuário
+- [x] Menu "Pagamentos" oculto para funcionários
+- [x] Relacionamento 1:1 funcionario-usuario
+
+**Estimativa:** 8 Story Points  
+**Prioridade:** Crítica  
+**Sprint:** 1  
+**Status:** ✅ **CONCLUÍDO** (Outubro 2025)  
+**Desenvolvedor:** Dalila Rodrigues  
+**Implementação:** Integrado na tela de Funcionários
+
+---
 
 ### 🎯 Epic 1: Gestão de Clientes
 
@@ -312,6 +341,8 @@ Sistema completo de gestão para salões de lash designer
 ### Sprint 1 (2 semanas) - MVP Core
 **Objetivo**: Funcionalidades essenciais para operação básica
 
+- [x] ✅ **ÉPICO 0 COMPLETO** - Sistema de Permissões (8 SP)
+  - [x] ✅ US000 - Gestão de Usuários
 - [x] ✅ **ÉPICO 1 COMPLETO** - Gestão de Clientes (14 SP)
   - [x] ✅ US001 - Cadastro de Cliente
   - [x] ✅ US002 - Buscar Cliente
@@ -330,6 +361,7 @@ Sistema completo de gestão para salões de lash designer
 - ✅ Agenda básica com visualização diária
 
 **Status Sprint 1:** 🟢 **QUASE CONCLUÍDO** (98% concluído)  
+**ÉPICO 0**: ✅ **100% CONCLUÍDO**  
 **ÉPICO 1**: ✅ **100% CONCLUÍDO**
 
 ### Sprint 2 (2 semanas) - Gestão Financeira
@@ -478,9 +510,10 @@ Sistema completo de gestão para salões de lash designer
 <div align="center">
 
 **Desenvolvido por**: Equipe DATAMETRIA  
-**Última Atualização**: 15/01/2024  
-**Versão**: 2.0  
-**Próxima Revisão**: Sprint Review (22/01/2024)  
+**Última Atualização**: 19/10/2025  
+**Versão**: 2.1  
+**Próxima Revisão**: Sprint Review (26/10/2025)  
+**ÉPICO 0**: 🎆 **100% CONCLUÍDO** - Sistema de Permissões (8/8 SP)  
 **ÉPICO 1**: 🎆 **100% CONCLUÍDO** - Gestão Completa de Clientes (14/14 SP)
 
 ---

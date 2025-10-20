@@ -10,11 +10,17 @@ with app.app_context():
         admin = Usuario(
             username='admin',
             email='admin@lashmanager.com',
-            nome='Administrador'
+            nome='Administrador',
+            tipo_usuario='admin'
         )
         admin.set_password('admin123')
         db.session.add(admin)
         db.session.commit()
         print('Usuario admin criado!')
     else:
-        print('Usuario admin ja existe')
+        if admin.tipo_usuario != 'admin':
+            admin.tipo_usuario = 'admin'
+            db.session.commit()
+            print('Usuario admin atualizado!')
+        else:
+            print('Usuario admin ja existe')

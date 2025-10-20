@@ -21,17 +21,41 @@ def get_funcionarios():
 @funcionarios_bp.route('/', methods=['POST'])
 @jwt_required()
 def create_funcionario():
+    from app.models.usuario import Usuario
     try:
         data = request.get_json()
         
         if not data.get('nome') or not data.get('especialidade'):
             return jsonify({'error': 'Nome e especialidade são obrigatórios'}), 400
         
+        if not data.get('email') or not data.get('username') or not data.get('password'):
+            return jsonify({'error': 'Email, username e senha são obrigatórios'}), 400
+        
+        # Verificar duplicatas
+        if Usuario.query.filter_by(username=data.get('username')).first():
+            return jsonify({'error': 'Username já existe'}), 400
+        
+        if Usuario.query.filter_by(email=data.get('email')).first():
+            return jsonify({'error': 'Email já existe'}), 400
+        
+        # Criar usuário
+        usuario = Usuario(
+            username=data.get('username'),
+            email=data.get('email'),
+            nome=data.get('nome'),
+            tipo_usuario=data.get('tipo_usuario', 'funcionario')
+        )
+        usuario.set_password(data.get('password'))
+        db.session.add(usuario)
+        db.session.flush()
+        
+        # Criar funcionário
         funcionario = Funcionario(
             nome=data.get('nome'),
             especialidade=data.get('especialidade'),
             telefone=data.get('telefone'),
-            porcentagem=float(data.get('porcentagem', 25.00))
+            porcentagem=float(data.get('porcentagem', 25.00)),
+            usuario_id=usuario.id
         )
         
         db.session.add(funcionario)

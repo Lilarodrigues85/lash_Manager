@@ -72,15 +72,25 @@ const themeStore = useThemeStore()
 
 const isAuthenticated = computed(() => !!localStorage.getItem('token'))
 
-const menuItems = [
-  { title: 'Dashboard', icon: 'mdi-view-dashboard-outline', to: '/' },
-  { title: 'Clientes', icon: 'mdi-account-heart-outline', to: '/clientes' },
-  { title: 'Agenda', icon: 'mdi-calendar-heart', to: '/agenda' },
-  { title: 'Funcionários', icon: 'mdi-account-star-outline', to: '/funcionarios' },
-  { title: 'Procedimentos', icon: 'mdi-eye-plus-outline', to: '/procedimentos' },
-  { title: 'Pagamentos', icon: 'mdi-credit-card-outline', to: '/pagamentos' },
-  { title: 'Mensagens', icon: 'mdi-whatsapp', to: '/mensagens' }
-]
+const menuItems = computed(() => {
+  const usuario = authStore.usuario
+  const isAdmin = usuario?.tipo_usuario === 'admin'
+  
+  const items = [
+    { title: 'Dashboard', icon: 'mdi-view-dashboard-outline', to: '/' },
+    { title: 'Clientes', icon: 'mdi-account-heart-outline', to: '/clientes' },
+    { title: 'Agenda', icon: 'mdi-calendar-heart', to: '/agenda' },
+    { title: 'Funcionários', icon: 'mdi-account-star-outline', to: '/funcionarios' },
+    { title: 'Procedimentos', icon: 'mdi-eye-plus-outline', to: '/procedimentos' },
+    { title: 'Mensagens', icon: 'mdi-whatsapp', to: '/mensagens' }
+  ]
+  
+  if (isAdmin) {
+    items.push({ title: 'Pagamentos', icon: 'mdi-credit-card-outline', to: '/pagamentos' })
+  }
+  
+  return items
+})
 
 const toggleTheme = () => {
   themeStore.toggleTheme()

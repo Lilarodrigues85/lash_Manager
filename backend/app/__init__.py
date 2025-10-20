@@ -63,6 +63,7 @@ def create_app():
     from app.routes.dashboard import dashboard_bp
     from app.routes.mensagens import mensagens_bp
     from app.routes.comissoes import comissoes_bp
+    from app.routes.usuarios import usuarios_bp
     
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
     app.register_blueprint(clientes_bp, url_prefix='/api/clientes')
@@ -73,6 +74,7 @@ def create_app():
     app.register_blueprint(dashboard_bp, url_prefix='/api/dashboard')
     app.register_blueprint(mensagens_bp, url_prefix='/api/mensagens')
     app.register_blueprint(comissoes_bp, url_prefix='/api/comissoes')
+    app.register_blueprint(usuarios_bp, url_prefix='/api/usuarios')
     
     # Global OPTIONS handler for CORS preflight
     @app.before_request

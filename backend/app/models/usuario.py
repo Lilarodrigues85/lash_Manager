@@ -10,6 +10,7 @@ class Usuario(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
     nome = db.Column(db.String(100), nullable=False)
+    tipo_usuario = db.Column(db.String(20), default='funcionario')  # 'admin' ou 'funcionario'
     ativo = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
@@ -25,6 +26,7 @@ class Usuario(db.Model):
             'username': self.username,
             'email': self.email,
             'nome': self.nome,
+            'tipo_usuario': self.tipo_usuario,
             'ativo': self.ativo,
             'created_at': self.created_at.isoformat() if self.created_at else None
         }
